@@ -75,21 +75,35 @@ require 'cek.php';
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
+                                                <th>Tanggal</th>
                                                 <th>Nama Barang</th>
-                                                <th>Deskripsi</th>
-                                                <th>Stock</th>
+                                                <th>Jumlah</th>
+                                                <th>pegawai</th>
                                                 
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        <?php
+                                        $ambilsemuadatastock = mysqli_query($conn, "select * from keluar k, stock s where s.idbarang = k.idbarang");
+                                        while($data = mysqli_fetch_array($ambilsemuadatastock)){
+                                            $tanggal = $data['tanggal'];
+                                            $namabarang = $data['namabarang'];
+                                            $pegawai = $data['pegawai'];
+                                            $qty = $data['qty'];
+
+                                        ?>
+
                                             <tr>
-                                                <td>Tiger Nixon</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
+                                                <td><?= $tanggal; ?></td>
+                                                <td><?= $namabarang; ?></td>
+                                                <td><?= $pegawai; ?></td>
+                                                <td><?= $qty; ?></td>
                                                 
-                                            </tr>                                            
+                                            </tr>                                          
+                                            <?php 
+                                            };
+
+                                            ?>                                        
                                         </tbody>
                                     </table>
                                 </div>
@@ -136,13 +150,30 @@ require 'cek.php';
 
       <!-- Modal body -->
       <form method="post">
-                                <div class="modal-body">
-                                    <input type="text" name="namabarang" placeholder="Nama Barang" class="form-control" required>
-                                    <input type="text" name="deskripsi" placeholder="Deskripsi " class="form-control" required>
-                                    <input type="number" name="stock" placeholder="Stock" class="form-control" required>
-                                    <button type="submit" class="btn btn-primary" name="addnewbarang"> Submit </button>
-                                </div>
-                              </form>
+      <div class="modal-body">
+
+      <select name="barangnya" class="form-control">
+        <?php 
+            $ambilsemuadatanya = mysqli_query($conn, "select * from stock");
+            while ($fetcharray = mysqli_fetch_array($ambilsemuadatanya)){
+            $namabarangnya = $fetcharray ['namabarang'];
+            $idbarangnya = $fetcharray ['idbarang'];
+        ?> 
+
+            <option value="<?=$idbarangnya;?>"><?= $namabarangnya;?></option>
+            
+        <?php
+            }
+        ?>
+       </select>
+        <br>
+        
+        <input type="number" name="qty" placeholder="quantity" class="form-control" required>
+        <br>
+        <input type="text" name="pegawai" placeholder="Pegawai" class="form-control" required>
+        <button type="submit" class="btn btn-primary" name="addbarangkeluar"> Submit </button>
+    </div>
+    </form>
 
       <!-- Modal footer -->
       <!-- <div class="modal-footer">

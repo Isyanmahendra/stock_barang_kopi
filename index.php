@@ -80,13 +80,31 @@ require 'cek.php';
                                             </tr>
                                         </thead>
                                         <tbody>
+
+                                        <?php
+                                        $ambilsemuadatastock = mysqli_query($conn, "select * from stock");
+                                        $i = 0;
+                                        
+                                        while($data = mysqli_fetch_array($ambilsemuadatastock)){
+                                            $i++;
+                                            $namabarang = $data['namabarang'];
+                                            $deskripsi = $data['deskripsi'];
+                                            $stock = $data['stock'];
+
+                                        ?>
+
                                             <tr>
-                                                <td>Tiger Nixon</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
+                                                <td><?= $i; ?></td>
+                                                <td><?= $namabarang; ?></td>
+                                                <td><?= $deskripsi; ?></td>
+                                                <td><?= $stock; ?></td>
                                                 
-                                            </tr>                                            
+                                            </tr>                                          
+                                            <?php 
+                                            };
+
+                                            ?>
+                                            
                                         </tbody>
                                     </table>
                                 </div>

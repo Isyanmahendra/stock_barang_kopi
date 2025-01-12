@@ -66,7 +66,7 @@ require 'cek.php';
                             <div class="card-header">
                               <!-- Button to Open the Modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-  TAmbah data
+  Tambah data masuk
 </button>
 
 
@@ -75,21 +75,37 @@ require 'cek.php';
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
+                                                <th>tanggal</th>
                                                 <th>Nama Barang</th>
-                                                <th>Deskripsi</th>
+                                                <th>keterangan</th>
                                                 <th>Stock</th>
                                                 
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            
+                                        <?php
+                                        $ambilsemuadatastock = mysqli_query($conn, "select * from masuk m, stock s where s.idbarang = m.idbarang");
+                                        while($data = mysqli_fetch_array($ambilsemuadatastock)){
+                                            $tanggal = $data['tanggal'];
+                                            $namabarang = $data['namabarang'];
+                                            $keterangan = $data['keterangan'];
+                                            $qty = $data['qty'];
+
+                                        ?>
+
                                             <tr>
-                                                <td>Tiger Nixon</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
+                                                <td><?= $tanggal; ?></td>
+                                                <td><?= $namabarang; ?></td>
+                                                <td><?= $keterangan; ?></td>
+                                                <td><?= $qty; ?></td>
                                                 
-                                            </tr>                                            
+                                            </tr>                                          
+                                            <?php 
+                                            };
+
+                                            ?>
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -130,34 +146,37 @@ require 'cek.php';
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">TAmbah barang masuk</h4>
+        <h4 class="modal-title">Tmbah barang masuk</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
       <!-- Modal body -->
       <form method="post">
-                                <div class="modal-body">
+      <div class="modal-body">
+        
+      <select name="barangnya" class="form-control">
+        <?php 
+            $ambilsemuadatanya = mysqli_query($conn, "select * from stock");
+            while ($fetcharray = mysqli_fetch_array($ambilsemuadatanya)){
+            $namabarangnya = $fetcharray ['namabarang'];
+            $idbarangnya = $fetcharray ['idbarang'];
+        ?> 
 
-                                <select name="barangnya">
-                                    <?php 
-                                        $ambilsemuadatanya = mysqli_query($conn, "select * from stock");
-                                        while ($fetcharray = mysqli_fetch_array($ambilsemuadatanya)){
-                                            $namabarangnya = $fetcharray ['namabarang'];
-                                            $idbarangnya = $fetcharray ['idbarang'];
-                                        ?>
-                                    
-<option value="<?=$idbarangnya;?>"><?= $namabarangnya;?></option>
-
-                                    <?php
-                                        }
-                                    ?>
-                                </select>
-                                    <input type="text" name="namabarang" placeholder="Nama Barang" class="form-control" required>
-                                    <input type="text" name="deskripsi" placeholder="Deskripsi " class="form-control" required>
-                                    <input type="number" name="stock" placeholder="Stock" class="form-control" required>
-                                    <button type="submit" class="btn btn-primary" name="addnewbarang"> Submit </button>
-                                </div>
-                              </form>
+            <option value="<?=$idbarangnya;?>"><?= $namabarangnya;?></option>
+            
+        <?php
+            }
+        ?>
+       </select>
+        <br>
+        
+        <input type="number" name="qty" placeholder="quantity" class="form-control" required>
+        <br>
+        <input type="text" name="penerima" placeholder="penerima " class="form-control" required>
+        <br>      
+        <button type="submit" class="btn btn-primary" name="barangmasuk"> Submit </button>
+        </div>
+        </form>
 
       <!-- Modal footer -->
       <!-- <div class="modal-footer">
